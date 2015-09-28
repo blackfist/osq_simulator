@@ -11,7 +11,7 @@ defmodule Endpoint do
 
   defp loop(node_key) do
     IO.puts "requesting a new config with node key #{node_key}"
-    request = HTTPotion.post "https://osq.herokuapp.com/api/enroll",
+    request = HTTPotion.post "https://osq.herokuapp.com/api/config",
       [body: "{\"node_key\": \"#{node_key}\"}",
       headers: ["User-Agent": "Elixir", "Content-Type": "application/json"]]
     IO.puts request.body
