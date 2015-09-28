@@ -1,0 +1,2 @@
+defmodule OsqSimulator do
+end
