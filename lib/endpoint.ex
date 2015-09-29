@@ -10,11 +10,11 @@ defmodule Endpoint do
   end
 
   defp loop(node_key) do
-    IO.puts "requesting a new config with node key #{node_key}"
+    # IO.puts "requesting a new config with node key #{node_key}"
     request = HTTPotion.post "https://osq.herokuapp.com/api/config",
       [body: "{\"node_key\": \"#{node_key}\"}",
       headers: ["User-Agent": "Elixir", "Content-Type": "application/json"]]
-    IO.puts request.body
+    # IO.puts request.body
     :timer.sleep(1000 * 60 * 60) # Check for updates every hour
     loop(node_key)
   end
@@ -31,5 +31,9 @@ defmodule Endpoint do
 
     IO.puts "Starting 100 runtime endpoints"
     runtime = 1..100 |> Enum.map(fn(_) -> Endpoint.start("runtime"); :timer.sleep(500) end )
+
+    receive do
+      {:quit} -> IO.puts "quitting"
+    end
   end
 end

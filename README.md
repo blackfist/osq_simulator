@@ -14,7 +14,14 @@ see how your server is responding.
 4. From bash `iex -S mix`
 
 ## Running
-Simple way to start one endpoint is just `Endpoint.start("some string")`
+Launcher script is built by running `mix Escript.Build`. That creates an executable
+called start_servers which you can run on any machine that has erlang installed. If
+you don't change anything in this code, it will create 100 machines in 3 groups,
+named "hermes", "shogun", and "runtime". Each machine will check in for updates
+every hour.
+
+Another simple way to start one endpoint is `iex -S mix` and then
+ `Endpoint.start("some string")`
 
 If you want 100 endpoints you can use this bit of code:
 
