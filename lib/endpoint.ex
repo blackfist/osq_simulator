@@ -31,16 +31,18 @@ defmodule Endpoint do
 
   def main(_) do
     if System.get_env("NODE_ENROLL_SECRET") == nil do
-      IO.puts "You don't have anything in NODE_ENROLL_SECRET environment var"
+      raise "You don't have anything in NODE_ENROLL_SECRET environment var"
     end
     IO.puts "Starting 100 hermes endpoints"
-    hermes = 1..100 |> Enum.map(fn(_) -> Endpoint.start("hermes"); :timer.sleep(500) end )
+    hermes = 1..100 |> Enum.map(fn(_) -> spawn(fn -> Endpoint.start("hermes") end); :timer.sleep(500) end )
 
     IO.puts "Starting 100 shogun endpoints"
-    shogun = 1..100 |> Enum.map(fn(_) -> Endpoint.start("shogun"); :timer.sleep(500) end )
+    shogun = 1..100 |> Enum.map(fn(_) -> spawn(fn -> Endpoint.start("shogun") end); :timer.sleep(500) end )
 
     IO.puts "Starting 100 runtime endpoints"
-    runtime = 1..100 |> Enum.map(fn(_) -> Endpoint.start("runtime"); :timer.sleep(500) end )
+    runtime = 1..100 |> Enum.map(fn(_) -> spawn(fn -> Endpoint.start("runtime") end); :timer.sleep(500) end )
+
+    IO.puts "All servers running. CTRL+C to stop."
 
     receive do
       {:quit} -> IO.puts "quitting"
