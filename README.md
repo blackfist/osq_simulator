@@ -9,29 +9,23 @@ see how your server is responding.
 ## Set up
 
 1. Clone the repo
-2. Put a value in environment variable NODE_ENROLL_SECRET
-3. From bash `mix deps.get`
-4. From bash `iex -S mix`
+2. Make sure you have erlang installed
+3. Copy `config.yaml.example` to `config.yaml`
+4. Edit `config.yaml` to taste
+5. run `./start_servers`
 
-## Running
-Launcher script is built by running `mix Escript.Build`. That creates an executable
-called start_servers which you can run on any machine that has erlang installed. If
-you don't change anything in this code, it will create 100 machines in 3 groups,
-named "hermes", "shogun", and "runtime". Each machine will check in for updates
-every hour.
+## Configuration
 
-Another simple way to start one endpoint is `iex -S mix` and then
- `Endpoint.start("some string")`
+The file `config.yaml` will set the base url that osq_simulator will try to
+contact to enroll the fake servers. This should be the dns address of the server
+with a protocol on the front, such as `http://localhost:4567`.
 
-If you want 100 endpoints you can use this bit of code:
+Osquery servers will normally try to enroll using an enroll secret value which
+is also set in `config.yaml`.
 
-`hermes = 1..100 |> Enum.map(fn(_) -> Endpoint.start("hermes"); :timer.sleep(1000) end )`
+If you're using this with a server like [windmill](https://github.com/heroku/windmill)
+which takes the id and group with the enroll secret then in your `config.yaml` file
+make sure to set `send_id` and `send_group` to true.
 
-That will create a pool of 100 endpoints all in the variable named hermes. There is a
-one second delay between creation of each endpoint so you don't overload the server
-with 100 endpoints all trying to enroll at once.
-
-## Modifying for your needs
-Look in lib/endpoint.ex. You'll need to change the url that the endpoints will
-try to reach. Also you migth want to change the format of the enroll string that
-is being sent since right now it is based on windmill.
+Finally, in the groups variable, set a group name and the number of endpoints
+you want from that group.

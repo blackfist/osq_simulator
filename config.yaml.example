@@ -1,0 +1,8 @@
+base_url: http://localhost:4567
+enroll_secret: secret
+debug: true
+sleep: 500
+groups:
+  default: 100
+  test1: 100
+  test2: 100
