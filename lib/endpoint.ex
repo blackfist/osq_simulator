@@ -14,8 +14,10 @@ defmodule Endpoint do
 
     try do
       response = HTTPotion.post "#{Application.get_env(:osq_simulator, :base_url)}/api/enroll",
-        [body: final_secret,
+        [body: "{\"enroll_secret\": \"#{final_secret}\"}",
          headers: ["User-Agent": "Elixir", "Content-Type": "application/json"]]
+
+      logdebug(response.body)
 
       case JSON.decode(response.body) do
         {:ok, json} ->
